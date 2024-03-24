@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Responses\ApiResponse;
+use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\ValidationException;
 class TaskController extends Controller
 {
     /**
@@ -14,7 +16,13 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::all();
+        try {
+            $tasks = Task::all();
+            return ApiResponse::success('Task list',200,$tasks);
+
+        }catch (Exception $e) {
+            return  ApiResponse::error('Error getting task list',500); 
+        }
     }
 
     /**
@@ -30,8 +38,22 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $task = new Task;
-       // $task->
+        try {
+            $request->validate([
+                //'status_id'=>'required|exists:tasks', 
+                //'employee_id'=> 'required|exists:tasks', 
+                //'title'=>'required', 
+                //'description', 
+               // 'created_by', 
+                
+            ]);
+            $task = Task::create($request->all());
+            return ApiResponse::success('task created',201,$task);
+
+        } catch (ValidationException $e) {
+            return ApiResponse:: error('validation error',422,$task);
+        }
+
     }
 
     /**
