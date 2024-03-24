@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('created_by');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('modified_at')->useCurrent();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

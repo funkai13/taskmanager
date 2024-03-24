@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('status_id')->references('id')->on('task_statuses');
-            $table->foreign('employee_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('modified_by')->references('id')->on('users');
         });
