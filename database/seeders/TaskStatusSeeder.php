@@ -13,19 +13,20 @@ class TaskStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminUser = User::where('email','admin@taskmanager.com')->firts();
         TaskStatus::create([
-            'name' => 'Pendiente',
-            'description' => 'Estado inicial de una tarea pendiente',
-            'created_by' => $adminUser->id, // Aquí puedes ajustar el usuario que creó este estado
+            'name' => 'Pending',
+            'description' => 'Task is pending',
+            'created_by' => 'Seeder',
+            'created_at' => now(),
             'active' => true,
         ]);
 
         TaskStatus::create([
-            'name' => 'No activo',
-            'description' => 'Estado de tarea no activo',
-            'created_by' => $adminUser->id,
-            'active' => false, // Aquí establecemos el estado como no activo
+            'name' => 'Completed',
+            'description' => 'Task is completed',
+            'created_by' => 'Seeder',
+            'created_at' => now(),
+            'active' => true,
         ]);
 
     }

@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Task;
+use App\Models\TaskStatus;
+use App\Models\Employee;
+use Faker\Factory as Faker;
 class TaskSeeder extends Seeder
 {
     /**
@@ -13,22 +16,21 @@ class TaskSeeder extends Seeder
     public function run(): void
     {
 
-        $user1_id = 1;
-        $user2_id=2;
-        Task::create([
-            'status_id' => 1, // ID del estado de la tarea (pendiente, en proceso, etc.)
-            'user_id' => 1, // ID del usuario asignado a la tarea
-            'title' => 'Tarea de ejemplo 1',
-            'description' => 'Esta es una tarea de ejemplo 1',
-            'created_by' => $user1_id,
-        ]);
+        $faker = Faker::create();
 
-        Task::create([
-            'status_id' => 2,
-            'user_id' => 2,
-            'title' => 'Tarea de ejemplo 2',
-            'description' => 'Esta es una tarea de ejemplo 2',
-            'created_by' => $user2_id,
-        ]);
+        // Obtener los IDs de los estados de tarea y empleados existentes
+        $statusIds = TaskStatus::pluck('id')->toArray();
+        $employeeIds = Employee::pluck('id')->toArray();
+
+        // Crear dos tareas de ejemplo
+        for ($i = 0; $i < 2; $i++) {
+            Task::create([
+                'status_id' => $faker->randomElement($statusIds),
+                'employee_id' => $faker->randomElement($employeeIds),
+                'title' => $faker->sentence(5),
+                'description' => $faker->paragraph(3),
+                'created_by' => 'Seeder',
+            ]);
+        }
     }
 }

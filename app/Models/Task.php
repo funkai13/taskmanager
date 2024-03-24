@@ -8,10 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-        'title',
-        'description',
-        'status_id',
-        'user_id',
+        'status_id', 'employee_id', 'title', 'description', 'created_by', 'modified_by'
     ];
 
     public function status()
@@ -19,15 +16,15 @@ class Task extends Model
         return $this->belongsTo(TaskStatus::class);
     }
 
-    public function assignee()
+    public function employee()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Employee::class);
     }
 
     public function comments()
     {
         return $this->hasMany(CommentTask::class);
     }
-
+    
     use HasFactory;
 }
