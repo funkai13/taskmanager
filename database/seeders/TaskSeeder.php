@@ -12,12 +12,15 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $user1_id = 1;
+        $user2_id=2;
         Task::create([
             'status_id' => 1, // ID del estado de la tarea (pendiente, en proceso, etc.)
             'user_id' => 1, // ID del usuario asignado a la tarea
             'title' => 'Tarea de ejemplo 1',
             'description' => 'Esta es una tarea de ejemplo 1',
-            'created_by' => 'admin',
+            'created_by' => $user1_id,
         ]);
 
         Task::create([
@@ -25,7 +28,7 @@ class TaskSeeder extends Seeder
             'user_id' => 2,
             'title' => 'Tarea de ejemplo 2',
             'description' => 'Esta es una tarea de ejemplo 2',
-            'created_by' => 'admin',
+            'created_by' => $user2_id,
         ]);
     }
 }

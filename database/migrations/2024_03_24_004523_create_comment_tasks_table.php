@@ -14,15 +14,13 @@ return new class extends Migration
         Schema::create('comment_tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('task_id');
-            $table->text('comment');
-            $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('modified_by')->nullable();
-            $table->timestamps();
+            $table->string('comment', 500);
+            $table->string('created_by', 45);
+            $table->string('modified_by', 45)->nullable();
             $table->boolean('active')->default(true);
+            $table->timestamps();
 
-            $table->foreign('task_id')->references('id')->on('tasks');
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->foreign('modified_by')->references('id')->on('users');
+            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
         });
     }
 

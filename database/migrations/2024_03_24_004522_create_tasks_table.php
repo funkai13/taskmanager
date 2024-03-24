@@ -14,17 +14,16 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('status_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('employee_id');
             $table->string('title');
-            $table->text('description');
-            $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('modified_by')->nullable();
+            $table->string('description', 500);
+            $table->string('created_by');
+            $table->string('modified_by')->nullable();
             $table->timestamps();
 
-            $table->foreign('status_id')->references('id')->on('task_statuses');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->foreign('modified_by')->references('id')->on('users');
+            // Foreign keys
+            $table->foreign('status_id')->references('id')->on('task_statuses')->onDelete('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
         });
     }
 

@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_statuses', function (Blueprint $table) {
+        Schema::create('employees', function (Blueprint $table) {
+            
             $table->id();
-            $table->string('name', 45)->nullable();
-            $table->string('description', 45)->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->string('name');
+            $table->string('code', 45);
             $table->string('created_by', 45);
             $table->string('modified_by', 45)->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_statuses');
+        Schema::dropIfExists('employees');
     }
 };
