@@ -14,14 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-       $admin = User::create([
+         User::create([
             'name' => 'admin',
             'email' => 'admin@taskmanager.com',
             'password' => Hash::make('admin'), // Recuerda cambiar 'password' por la contraseña deseada
         ]);
 
        
-        $editor = User::create([
+          User::create([
             'name'=>'editor',
             'email'=>'editor@speaksmarter.net',
             'password' => Hash::make('editor')]
