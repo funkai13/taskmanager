@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use App\Http\Requests\StoreTaskStatusRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
-
+use App\Http\Responses\ApiResponse;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 class TaskStatusController extends Controller
 {
     /**
@@ -13,7 +17,13 @@ class TaskStatusController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $taskstatus = TaskStatus::all();
+            return ApiResponse::success('Taskstatus list',200,$taskstatus);
+
+        }catch (Exception $e) {
+            return  ApiResponse::error('Error getting taskstatus list',500); 
+        }
     }
 
     /**
@@ -27,9 +37,22 @@ class TaskStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskStatusRequest $request)
+    public function store(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'name', 
+                'description', 
+                'created_by', 
+                'active',
+                
+            ]);
+            $taskstatus = TaskStatus::create($request->all());
+           return ApiResponse::success('task status Create',201,$taskstatus);
+
+        } catch (ValidationException $e) {
+            return ApiResponse:: error('validation error',422,);
+        }
     }
 
     /**
@@ -37,7 +60,7 @@ class TaskStatusController extends Controller
      */
     public function show(TaskStatus $taskStatus)
     {
-        //
+        return $taskStatus;
     }
 
     /**
@@ -51,16 +74,45 @@ class TaskStatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskStatusRequest $request, TaskStatus $taskStatus)
+    public function update(Request $request,  $id)
     {
-        //
+        try {
+            $taskstatus = TaskStatus::findOrFail($id);
+            $request->validate([
+                'name', 
+                'description', 
+                'created_by', 
+                'active',
+                
+            ]);
+            $taskstatus ->update($request->all());
+        } catch (ValidationException $e) {
+             return ApiResponse:: error('validation error',422,);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TaskStatus $taskStatus)
+    public function destroy( $id)
     {
-        //
+        try {
+            $taskstatus = TaskStatus::findOrFail($id);
+            $taskstatus->delete();
+            return ApiResponse::success('Deleted TaskStatus');
+        } catch (Exception $e) {
+            return ApiResponse::error('TaskStatus not found',404);
+        }
+    }
+
+    public function taskByStatus($id) {
+        try {
+            $status = TaskStatus::with('tasks')->findOrFail($id);
+            return ApiResponse::success('task by status', 200, $status);
+        } catch (ModelNotFoundException $e) {
+
+            return ApiResponse::error('Stacsk by status not found',404);
+        }
+
     }
 }
