@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTaskStatusRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Http\Responses\ApiResponse;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 class TaskStatusController extends Controller
@@ -102,5 +103,16 @@ class TaskStatusController extends Controller
         } catch (Exception $e) {
             return ApiResponse::error('TaskStatus not found',404);
         }
+    }
+
+    public function taskByStatus($id) {
+        try {
+            $status = TaskStatus::with('tasks')->findOrFail($id);
+            return ApiResponse::success('task by status', 200, $status);
+        } catch (ModelNotFoundException $e) {
+
+            return ApiResponse::error('Stacsk by status not found',404);
+        }
+
     }
 }
