@@ -48,7 +48,7 @@ class TaskController extends Controller
                 
             ]);
             $task = Task::create($request->all());
-           return ApiResponse::success('task created',201,$task);
+        return ApiResponse::success('task created',201,$task);
 
         } catch (ValidationException $e) {
             return ApiResponse:: error('validation error',422,);
@@ -61,7 +61,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-     return $task;
+        return $task;
     }
 
     /**
