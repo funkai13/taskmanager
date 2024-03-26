@@ -18,7 +18,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 // Public Routes
-Route::post('auth/login', [AuthController::class, 'login'])->withoutMiddleware(CheckRole::class);
+Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
 
 // Protected Routes
@@ -29,9 +29,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('tasks',TaskController::class);
     Route::apiResource('task_statuses',TaskStatusController::class);
     Route::apiResource('comment_tasks',CommentTaskController::class);
-    // Route::apiResource('employees',EmployeeController::class)->middleware('CheckRole:admin');
 
     // Admin Routes
-    Route::post('auth/register', [AuthController::class, 'register'])->middleware('restrictRole:admin');
-    Route::apiResource('employees',EmployeeController::class)->middleware('CheckRole:admin');
+//    Route::post('auth/register', [AuthController::class, 'register'])->middleware('CheckRole:admin');
+    Route::apiResource('employees',EmployeeController::class)->middleware('role:admin');
 });

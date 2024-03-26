@@ -20,14 +20,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api(prepend: [
             EnsureFrontendRequestsAreStateful::class,
             ThrottleRequests::class.':api',
-            SubstituteBindings::class,
+            SubstituteBindings::class
         ]);
 
         $middleware->alias([
             'verified' => EnsureEmailIsVerified::class,
+            'role' => CheckRole::class
         ]);
-
-//        $middleware->append(CheckRole::class);
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
