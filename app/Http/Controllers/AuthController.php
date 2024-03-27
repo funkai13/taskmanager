@@ -40,7 +40,7 @@ class AuthController extends Controller
     public function login(Request $request): \Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ]);
 
@@ -49,7 +49,7 @@ class AuthController extends Controller
         }
 
         $data = $validator->getData();
-        $user = User::where('name', $data['name'])->first();
+        $user = User::where('email', $data['email'])->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
             return response([

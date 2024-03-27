@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('task_statuses',TaskStatusController::class);
     Route::apiResource('comment_tasks',CommentTaskController::class);
     Route::get('task_statuses/{status}/task', [TaskStatusController::class,'taskByStatus']);
-
+    Route::get('employees/{employee}/task', [EmployeeController::class, 'taskByEmployee']);
     // Admin Routes
     Route::apiResource('employees',EmployeeController::class)->middleware('role:admin');
     Route::post('auth/register', [AuthController::class, 'register'])->middleware('role:admin');
