@@ -131,11 +131,10 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $employee = Employee::where('user_id', $user->id);
+        $user = User::with('employee')->findOrFail($request->user()->id);
+
         return response()->json([
-            'user'=> $user,
-            'employee' => $employee
+            'user'=> $user
         ]);
     }
 
