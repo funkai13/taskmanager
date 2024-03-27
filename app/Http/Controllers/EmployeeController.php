@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use Exception;
 use App\Http\Responses\ApiResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 class EmployeeController extends Controller
@@ -21,7 +22,7 @@ class EmployeeController extends Controller
             return ApiResponse::success('Employees list',200,$employee);
 
         }catch (Exception $e) {
-            return  ApiResponse::error('Error getting employees list',500); 
+            return  ApiResponse::error('Error getting employees list',500);
         }
     }
 
@@ -40,10 +41,10 @@ class EmployeeController extends Controller
     {
         try {
             $request->validate([
-                'user_id'=>'required|exists:users,id', 
-                'name'=>'required', 
-                'code'=> 'required', 
-                'created_by' =>'required', 
+                'user_id'=>'required|exists:users,id',
+                'name'=>'required',
+                'code'=> 'required',
+                'created_by' =>'required',
                 'active'=>'required',
             ]);
             $employee = Employee::create($request->all());
@@ -78,10 +79,10 @@ class EmployeeController extends Controller
         try {
             $employee = Employee::findOrFail($id);
             $request->validate([
-                'user_id'=>'required|unique:employees|exists:users,id', 
-                'name'=>'required|unique:employees', 
-                'code'=> 'required', 
-                'created_by' =>'required', 
+                'user_id'=>'required|unique:employees|exists:users,id',
+                'name'=>'required|unique:employees',
+                'code'=> 'required',
+                'created_by' =>'required',
                 'active'=>'required',
             ]);
             $employee ->update($request->all());
@@ -103,5 +104,15 @@ class EmployeeController extends Controller
         } catch (Exception $e) {
             return ApiResponse::error('Employee not found',404);
         }
+    }
+    public function taskByEmployee($id) {
+        try {
+            $employee = Employee::with('tasks')->findOrFail($id);
+            return ApiResponse::success('task by employee', 200, $employee);
+        } catch (ModelNotFoundException $e) {
+
+            return ApiResponse::error('task by employee not found',404);
+        }
+
     }
 }
