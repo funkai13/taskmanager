@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\CommentTaskController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // Public Routes
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('auth/send-welcome-mail', [MailController::class, 'sendWelcomeMail']);
 
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function(){
