@@ -23,13 +23,16 @@ Route::post('auth/send-welcome-mail', [MailController::class, 'sendWelcomeMail']
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function(){
 
-    Route::post('auth/logout', [AuthController::class, 'logout']);
-
     Route::apiResource('tasks',TaskController::class);
     Route::apiResource('task_statuses',TaskStatusController::class);
     Route::apiResource('comment_tasks',CommentTaskController::class);
     Route::get('task_statuses/{status}/task', [TaskStatusController::class,'taskByStatus']);
     Route::get('employees/{employee}/task', [EmployeeController::class, 'taskByEmployee']);
+    Route::post('auth/logout', [AuthController::class, 'logout']);
+    Route::get('auth/me', [AuthController::class, 'me']);
+    Route::post('auth/change-password', [AuthController::class, 'changePassword']);
+    Route::post('auth/verify', [AuthController::class, 'verifyUser']);
+
     // Admin Routes
     Route::apiResource('employees',EmployeeController::class)->middleware('role:admin');
     Route::post('auth/register', [AuthController::class, 'register'])->middleware('role:admin');
