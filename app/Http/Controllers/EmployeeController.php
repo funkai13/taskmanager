@@ -43,6 +43,9 @@ class EmployeeController extends Controller
             $request->validate([
                 'user_id'=>'required|exists:users,id',
                 'name'=>'required',
+                'second_name',
+                'surname'=>'required',
+                'second_surname',
                 'code'=> 'required',
                 'created_by' =>'required',
                 'active'=>'required',
@@ -81,6 +84,9 @@ class EmployeeController extends Controller
             $request->validate([
                 'user_id'=>'required|unique:employees|exists:users,id',
                 'name'=>'required|unique:employees',
+                'second_name',
+                'surname'=>'required',
+                'second_surname',
                 'code'=> 'required',
                 'created_by' =>'required',
                 'active'=>'required',
